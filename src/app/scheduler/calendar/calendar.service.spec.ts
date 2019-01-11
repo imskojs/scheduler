@@ -3,7 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { CalendarService } from './calendar.service';
 
 describe('CalendarService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [CalendarService]
+  }));
 
   it('should be created', () => {
     const service: CalendarService = TestBed.get(CalendarService);
