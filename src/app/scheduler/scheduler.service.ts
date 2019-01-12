@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SimpleDate } from './scheduler.types';
+import { SimpleDate, SimpleTime } from './scheduler.types';
 
 const daysOfWeekMap = {
   [1]: 'monday', [2]: 'tuesday', [3]: 'wednesday', [4]: 'thursday',
@@ -18,6 +18,13 @@ export class SchedulerService {
     const day = date.getDate();
     const daysOfWeek = daysOfWeekMap[date.getDay()];
     return { year, month, day, daysOfWeek };
+  }
+
+  static simpleTime(timestamp: number): SimpleTime {
+    const date = new Date(timestamp);
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    return {hour, minute};
   }
 
 }

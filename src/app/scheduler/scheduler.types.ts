@@ -8,3 +8,8 @@ export class SimpleDate {
   daysOfWeek: DaysOfWeek;
 }
 
+export class SimpleTime {
+  hour: number;
+  minute: number;
+}
+
