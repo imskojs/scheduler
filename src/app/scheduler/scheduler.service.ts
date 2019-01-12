@@ -34,4 +34,11 @@ export class SchedulerService {
     return date.getTime();
   }
 
+  static toSimpleDateTime(timestamp: number): SimpleDateTime {
+    const simpleDate = SchedulerService.toSimpleDate(timestamp);
+    const simpleTime = SchedulerService.toSimpleTime(timestamp);
+    const simpleDateTime: SimpleDateTime = Object.assign({}, simpleDate, simpleTime);
+    return simpleDateTime;
+  }
+
 }

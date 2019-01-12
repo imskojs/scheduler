@@ -30,7 +30,7 @@ describe('SchedulerService', () => {
     it('should convert timestamp to SimpleTime', () => {
       const timestamp = 1547249260794;
       const simpleTime: SimpleTime = SchedulerService.toSimpleTime(timestamp);
-      expect(simpleTime).toEqual({hour: 8, minute: 27 });
+      expect(simpleTime).toEqual({ hour: 8, minute: 27 });
     });
   });
 
@@ -48,6 +48,22 @@ describe('SchedulerService', () => {
       expect(timestamp).toEqual(1547249220000);
 
     });
+  });
+
+  describe('#toSimpleDateTime static method', () => {
+    it('should convert timestamp to SimpleDateTime', () => {
+      const timestamp = 1547249260794;
+      const simpleDateTime: SimpleDateTime = SchedulerService.toSimpleDateTime(timestamp);
+      expect(simpleDateTime).toEqual({
+        year: 2019,
+        month: 1,
+        day: 12,
+        daysOfWeek: 'saturday',
+        hour: 8,
+        minute: 27
+      });
+    });
+
   });
 
 });
