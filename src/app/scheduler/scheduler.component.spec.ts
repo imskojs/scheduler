@@ -9,15 +9,13 @@ class CalendarStubComponent {}
 @Component({selector: 'scheduler-control', template: ''})
 class ControlStubComponent {}
 
-@Component({selector: 'app-welcome', template: ''})
-class WelcomeStubComponent {}
 describe('SchedulerComponent', () => {
   let component: SchedulerComponent;
   let fixture: ComponentFixture<SchedulerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         SchedulerComponent,
         CalendarStubComponent,
         ControlStubComponent
