@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SchedulerService } from './scheduler.service';
-import { SimpleDate, SimpleTime } from './scheduler.types';
+import { SimpleDate, SimpleTime, SimpleDateTime } from './scheduler.types';
 
 describe('SchedulerService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -31,6 +31,22 @@ describe('SchedulerService', () => {
       const timestamp = 1547249260794;
       const simpleTime: SimpleTime = SchedulerService.toSimpleTime(timestamp);
       expect(simpleTime).toEqual({hour: 8, minute: 27 });
+    });
+  });
+
+  describe('#toTimestamp static method', () => {
+    it('should convert SimpleDateTime to timestamp', () => {
+      const simpleDateTime: SimpleDateTime = {
+        year: 2019,
+        month: 1,
+        day: 12,
+        daysOfWeek: 'saturday',
+        hour: 8,
+        minute: 27
+      };
+      const timestamp = SchedulerService.toTimestamp(simpleDateTime);
+      expect(timestamp).toEqual(1547249220000);
+
     });
   });
 
