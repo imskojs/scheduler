@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SchedulerComponent } from './scheduler.component';
 import { Component } from '@angular/core';
 
-@Component({selector: 'scheduler-calendar', template: ''})
-class CalendarStubComponent {}
+@Component({selector: 'router-outlet', template: ''})
+class RouterOutletStubComponent {}
 
 @Component({selector: 'scheduler-control', template: ''})
 class ControlStubComponent {}
@@ -17,7 +17,7 @@ describe('SchedulerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SchedulerComponent,
-        CalendarStubComponent,
+        RouterOutletStubComponent,
         ControlStubComponent
       ]
     })

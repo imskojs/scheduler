@@ -82,7 +82,7 @@ describe('ControlService', () => {
     });
   });
 
-  describe('#sendNextDateDirection', () => {
+  describe('#sendNextDateDirection, #getNextDate', () => {
     let year, month, day, hour, dateSub, dateTypeSub;
     beforeEach(() => {
       const baseTime = new Date(2019, 0, 20, 20, 20);

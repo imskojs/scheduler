@@ -16,9 +16,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   private UNSUB: Subject<null> = new Subject();
 
   public dateType: DateType;
-  public selectedDateType$: Observable<DateType>;
   public selectedDateView$: Observable<string>;
-  public selectedDateTypeView$: Observable<DateType>;
 
   constructor(private controlService: ControlService) { }
 
