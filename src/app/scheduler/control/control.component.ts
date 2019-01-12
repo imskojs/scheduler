@@ -12,15 +12,14 @@ import { map } from 'rxjs/operators';
 })
 export class ControlComponent implements OnInit {
 
-  selectedDateView$: Observable<string>;
+  public selectedDateView$: Observable<string>;
 
   constructor(private controlService: ControlService) { }
 
   ngOnInit() {
     this.selectedDateView$ = this.controlService.getSelectedDate().pipe(
-      map((date: SimpleDateTime) => `${date.year}년 ${date.day}월`)
+      map(({year, month}: SimpleDateTime) => `${year}년 ${month}월`)
     );
   }
-
 
 }

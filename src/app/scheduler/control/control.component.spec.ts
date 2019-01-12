@@ -56,7 +56,11 @@ describe('ControlComponent', () => {
     fixture.detectChanges();
     const selectedDateView = fixture.debugElement.query(By.css('.selected-date'));
     const content = selectedDateView.nativeElement.textContent;
-    expect(content).toContain('2019년 12월');
+    expect(content).toContain('2019년 1월');
+
+    component.selectedDateView$.subscribe((formatedDate: string) => {
+      expect(formatedDate).toEqual('2019년 1월');
+    });
   });
 
 });
