@@ -13,10 +13,10 @@ describe('SchedulerService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('#simpleDate static method', () => {
+  describe('#toSimpleDate static method', () => {
     it('should convert timestamp to SimpleDate', () => {
       const timestamp = 1547249260794;
-      const simpleDate: SimpleDate = SchedulerService.simpleDate(timestamp);
+      const simpleDate: SimpleDate = SchedulerService.toSimpleDate(timestamp);
       expect(simpleDate).toEqual({
         year: 2019,
         month: 1,
@@ -26,10 +26,10 @@ describe('SchedulerService', () => {
     });
   });
 
-  describe('#simpleTime static method', () => {
+  describe('#toSimpleTime static method', () => {
     it('should convert timestamp to SimpleTime', () => {
       const timestamp = 1547249260794;
-      const simpleTime: SimpleTime = SchedulerService.simpleTime(timestamp);
+      const simpleTime: SimpleTime = SchedulerService.toSimpleTime(timestamp);
       expect(simpleTime).toEqual({hour: 8, minute: 27 });
     });
   });

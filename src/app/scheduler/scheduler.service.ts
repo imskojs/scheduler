@@ -11,7 +11,7 @@ export class SchedulerService {
 
   constructor() { }
 
-  static simpleDate(timestamp: number): SimpleDate {
+  static toSimpleDate(timestamp: number): SimpleDate {
     const date = new Date(timestamp);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -20,7 +20,7 @@ export class SchedulerService {
     return { year, month, day, daysOfWeek };
   }
 
-  static simpleTime(timestamp: number): SimpleTime {
+  static toSimpleTime(timestamp: number): SimpleTime {
     const date = new Date(timestamp);
     const hour = date.getHours();
     const minute = date.getMinutes();
