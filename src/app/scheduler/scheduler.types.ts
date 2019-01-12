@@ -1,5 +1,9 @@
+
 type DaysOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' |
   'friday' | 'saturday' | 'sunday';
+
+export type DateType = 'month'|'week';
+export type Direction = 'prev' | 'next';
 
 export class SimpleDateTime {
   year: number;
@@ -21,5 +25,7 @@ export class SimpleTime {
   hour: number;
   minute: number;
 }
+
+
 
 

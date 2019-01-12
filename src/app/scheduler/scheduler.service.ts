@@ -41,4 +41,8 @@ export class SchedulerService {
     return simpleDateTime;
   }
 
+  static getDaysInMonth(year, month): number {
+    return new Date(year, month, 0).getDate();
+  }
+
 }
