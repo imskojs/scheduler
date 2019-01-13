@@ -49,4 +49,31 @@ export class SchedulerService {
     return `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
   }
 
+  static groupSchedules(schedules: Schedule[], cached?: ScheduleGroup): ScheduleGroup {
+    return schedules.reduce((scheduleGroup: ScheduleGroup, schedule: Schedule) => {
+      if (!scheduleGroup[schedule.category]) {
+        scheduleGroup[schedule.category] = [];
+      }
+      scheduleGroup[schedule.category].push(schedule);
+      return scheduleGroup;
+    }, cached || <ScheduleGroup>{});
+  }
+
+  public getSchedules(month: number, week: number | null): Observable<Schedule[]> {
+    // http goes here
+    return of([
+      {
+        start: 12, count: 1, end: 13,
+        category: '20190121', year: 2019, month: 1,
+        day: 21, daysOfWeek: 4
+      },
+      {
+        start: 13, count: 1, end: 14,
+        category: '20190122', year: 2019, month: 1,
+        day: 21, daysOfWeek: 4
+      }
+    ]);
+  }
+
+
 }

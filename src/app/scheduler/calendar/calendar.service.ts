@@ -35,8 +35,16 @@ export class CalendarService {
     return [...previousMonthDays, ...selectedMonthDays, ...nextMonthDays];
   }
 
-  static addSchedulesToMonth(month: Day[], schedules: ScheduleGroup) {
-
+  static addSchedulesToMonth(month: Day[], scheduleGroup: ScheduleGroup): Day[] {
+    return month.map((day: Day) => {
+      const category = day && day.meta && day.meta.category;
+      if (!category) { return []; }
+      const schedules = scheduleGroup[category];
+      if (!schedules) { return day; }
+      const sortedSchedules = [...schedules].sort((a: Schedule, b: Schedule) => a.start - b.start);
+      day.push(...sortedSchedules);
+      return day;
+    });
   }
 
 
