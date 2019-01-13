@@ -1,0 +1,13 @@
+<div class="day-array">
+  <div *ngIf=" !day?.meta ">
+    EMPTY
+  </div>
+
+  {{day?.meta | json}}
+
+
+  <div *ngFor=" let schedule of day ">
+    {{ schedule | json}}
+  </div>
+
+</div>

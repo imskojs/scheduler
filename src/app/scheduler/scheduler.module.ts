@@ -10,6 +10,7 @@ import { CalendarWeeklyComponent } from './calendar-weekly/calendar-weekly.compo
 import { ControlService } from './control/control.service';
 import { CalendarService } from './calendar/calendar.service';
 import { SchedulerService } from './scheduler.service';
+import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SchedulerService } from './scheduler.service';
     ControlComponent,
     CalendarComponent,
     CalendarMonthlyComponent,
-    CalendarWeeklyComponent
+    CalendarWeeklyComponent,
+    CalendarDayComponent
   ],
   imports: [
     CommonModule,

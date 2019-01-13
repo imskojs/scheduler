@@ -1,3 +1,7 @@
-<p>
-  calendar-monthly works!
-</p>
+<div class="days-container">
+  <scheduler-calendar-day
+    *ngFor=" let day of (monthView$ | async); trackBy: trackByDayId "
+    [day]=" day "
+  >
+  </scheduler-calendar-day>
+</div>
