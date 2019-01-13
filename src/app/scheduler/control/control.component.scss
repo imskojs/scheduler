@@ -1,0 +1,38 @@
+.control-container {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+
+  .date-select-control {
+    display: flex;
+    width: 70%;
+    justify-content: space-around;
+    font-size: 60px;
+    font-weight: bold;
+  }
+
+  .toggle-month-week {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+
+    .month, .week {
+      border: 1px solid black;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: {
+        left: 10px;
+        right: 10px;
+      }
+    }
+
+    .active {
+      background: aquamarine;
+    }
+
+  }
+
+
+}
