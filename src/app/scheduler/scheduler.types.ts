@@ -8,6 +8,7 @@ export class SimpleDateTime {
   hour: number;
   minute: number;
   daysOfWeek: number;
+  category?: string;
 }
 
 export class SimpleDate {
@@ -15,6 +16,7 @@ export class SimpleDate {
   month: number;
   day: number;
   daysOfWeek: number;
+  category?: string;
 }
 
 export class SimpleTime {

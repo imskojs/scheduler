@@ -12,7 +12,8 @@ export class SchedulerService {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const daysOfWeek = date.getDay();
-    return { year, month, day, daysOfWeek };
+    const category = SchedulerService.toCategory(year, month , day);
+    return { year, month, day, daysOfWeek, category };
   }
 
   static toSimpleTime(timestamp: number): SimpleTime {
@@ -43,6 +44,9 @@ export class SchedulerService {
   static getFirstDayOfWeek(year, month) {
     const date = new Date(year, month - 1, 1);
     return date.getDay(); // 0: sunday, ~ 6: saturday
+  }
+  static toCategory(year, month, day) {
+    return `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
   }
 
 }

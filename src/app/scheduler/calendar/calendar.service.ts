@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SimpleDateTime } from '../scheduler.types';
 import { SchedulerService } from '../scheduler.service';
 
-const { getDaysInMonth, getFirstDayOfWeek } = SchedulerService;
+const { getDaysInMonth, getFirstDayOfWeek, toCategory } = SchedulerService;
 
 @Injectable()
 export class CalendarService {
@@ -12,16 +12,19 @@ export class CalendarService {
   static generateMonth(dateTime: SimpleDateTime) {
     const TOTAL_CELLS = 7 * 6; // if first day is saturday then we need 6 rows
     const { year, month } = dateTime;
-    const numberOfDays = getDaysInMonth(year, month);
+
+    const daysInCurrMonth = getDaysInMonth(year, month);
     const firstDayOfWeek = getFirstDayOfWeek(year, month);
-    const numberOfDaysLeft = TOTAL_CELLS - numberOfDays - firstDayOfWeek;
+    const numberOfDaysLeft = TOTAL_CELLS - daysInCurrMonth - firstDayOfWeek;
+
+    const daysInPrevMonth = getDaysInMonth(year, month - 1);
 
     const previousMonthDays = Array(firstDayOfWeek).fill(null).map(() => []);
 
-    const selectedMonthDays: [][] = Array(numberOfDays).fill(null).map((_, index) => {
+    const selectedMonthDays: [][] = Array(daysInCurrMonth).fill(null).map((_, index) => {
       const day: any = [];
       day.meta = {
-        id: '' + year + month + index + 1,
+        category: toCategory(year, month, index + 1),
         year, month,
         day: index + 1,
         daysOfWeek: (firstDayOfWeek + index) % 7
@@ -33,5 +36,10 @@ export class CalendarService {
 
     return [...previousMonthDays, ...selectedMonthDays, ...nextMonthDays];
   }
+
+  static addSchedulesToMonth(month: any[][], schedules: []) {
+
+  }
+
 
 }
