@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Schedule, ScheduleGroup, SimpleDate, SimpleDateTime, SimpleTime} from './scheduler.types';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class SchedulerService {
 
-  private addScheduleSub: Subject<Schedule> = new Subject<Schedule>();
-
-  constructor() {
+  constructor(private httpClient: HttpClient) {
   }
 
   static toSimpleDate(timestamp: number): SimpleDate {
@@ -62,6 +61,12 @@ export class SchedulerService {
       return scheduleGroup;
     }, cached || <ScheduleGroup>{});
   }
+
+  public addSchedule(schedule) {
+    // should return Schedules of of updating schedule Year, Month;
+    return this.httpClient.post('urlToWhatever', schedule).toPromise();
+  }
+
 
   public getSchedules(month: number, week: number | null): Observable<Schedule[]> {
     // http goes here

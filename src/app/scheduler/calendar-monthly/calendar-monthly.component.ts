@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ControlService} from '../control/control.service';
 import {Day, Schedule, ScheduleGroup, SimpleDateTime} from '../scheduler.types';
-import {distinctUntilChanged, map, mergeMap, withLatestFrom} from 'rxjs/operators';
+import {distinctUntilChanged, map, mergeMap, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {SchedulerService} from '../scheduler.service';
 import {CalendarService} from '../calendar/calendar.service';
-import {merge, Observable, of, zip} from 'rxjs';
+import {Observable, of, Subject, zip} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 const {groupSchedules, toCategory, toSimpleTime} = SchedulerService;
@@ -15,9 +15,9 @@ const {generateMonth, addSchedulesToMonth} = CalendarService;
   templateUrl: './calendar-monthly.component.html',
   styleUrls: ['./calendar-monthly.component.scss']
 })
-export class CalendarMonthlyComponent implements OnInit {
+export class CalendarMonthlyComponent implements OnInit, OnDestroy {
 
-  public monthView$: Observable<Day[]>;
+  public month: Day[];
   public start = {hour: 10, minute: 0};
   public end = {hour: 11, minute: 0};
   public date = {year: null, month: null, day: null};
@@ -25,6 +25,7 @@ export class CalendarMonthlyComponent implements OnInit {
   public memo = '';
 
   private monthGenerator$: Observable<Day[]>;
+  private UNSUB: Subject<null> = new Subject();
 
   constructor(
     private controlService: ControlService,
@@ -39,15 +40,19 @@ export class CalendarMonthlyComponent implements OnInit {
       map((dateTime: SimpleDateTime) => generateMonth(dateTime))
     );
 
-
-    this.monthView$ = merge(this.monthGenerator$).pipe(
+    this.monthGenerator$.pipe(
       withLatestFrom(this.monthGenerator$),
       mergeMap(([_, month]) => zip(of(month), this.scheduleService.getSchedules(1, null))),
       map(([month, schedules]: [Day[], Schedule[]]) => {
         const scheduleGroup: ScheduleGroup = groupSchedules(schedules);
         return addSchedulesToMonth(month, scheduleGroup);
-      })
-    );
+      }),
+      takeUntil(this.UNSUB)
+    ).subscribe(month => this.month = month);
+  }
+
+  ngOnDestroy(): void {
+    this.UNSUB.next();
   }
 
   public openModal(content, day) {
@@ -59,9 +64,9 @@ export class CalendarMonthlyComponent implements OnInit {
     this.start = start;
     this.end = end;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result
-      .then((result: 'save' | 'update') => {
-        console.log(result);
-        this.handleSave();
+      .then((result: 'save' | 'update') => this.handleSave())
+      .then(month => {
+        this.month = month;
       })
       .catch((reason) => {
         this.handleCancel();
@@ -77,11 +82,24 @@ export class CalendarMonthlyComponent implements OnInit {
       title: this.title, content: this.memo, start: this.start.hour,
       count: Math.floor(this.end.hour - this.start.hour), end: this.end.hour,
       category: toCategory(this.date.year, this.date.month, this.date.day),
-      year: this.date.year, month: this.date.month, day: this.date.day,
+      year: this.date.year, month: this.date.month, day: this.date.day
     };
-    console.log(schedule);
     this.title = '';
     this.memo = '';
+    return this.scheduleService.addSchedule(schedule).then((schedules: Schedule[]) => {
+      const scheduleGroup = groupSchedules(schedules);
+      return of(scheduleGroup).pipe(
+        withLatestFrom(this.monthGenerator$, this.controlService.getSelectedDate()),
+        map(([grouped, month, simpleDateTime]) => {
+          const monthMeta = (month as any).meta;
+          if (simpleDateTime.year === monthMeta.year && simpleDateTime.month === monthMeta.month) {
+            return addSchedulesToMonth(month, grouped);
+          }
+          return month;
+        })
+      ).toPromise();
+    });
+
   }
 
   private handleCancel() {

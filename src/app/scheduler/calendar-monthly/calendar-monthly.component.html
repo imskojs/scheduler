@@ -1,7 +1,7 @@
 <div class="days-container">
   <scheduler-calendar-day
     class="day"
-    *ngFor=" let day of (monthView$ | async); let i = index; trackBy: trackByDayId "
+    *ngFor=" let day of month; let i = index; trackBy: trackByDayId "
     (click)="openModal(content, day)"
     [day]=" day "
     [index]="i"

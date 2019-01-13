@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
-import { SimpleDateTime, Schedule, ScheduleGroup, Day } from '../scheduler.types';
-import { SchedulerService } from '../scheduler.service';
+import {Injectable} from '@angular/core';
+import {Day, Schedule, ScheduleGroup, SimpleDateTime} from '../scheduler.types';
+import {SchedulerService} from '../scheduler.service';
 
-const { getDaysInMonth, getFirstDayOfWeek, toCategory } = SchedulerService;
+const {getDaysInMonth, getFirstDayOfWeek, toCategory} = SchedulerService;
 
 @Injectable()
 export class CalendarService {
 
-  constructor() { }
+  constructor() {
+  }
 
   static generateMonth(dateTime: SimpleDateTime) {
     const TOTAL_CELLS = 7 * 6; // if first day is saturday then we need 6 rows
-    const { year, month } = dateTime;
+    const {year, month} = dateTime;
 
     const daysInCurrMonth = getDaysInMonth(year, month);
     const firstDayOfWeek = getFirstDayOfWeek(year, month);
@@ -32,15 +33,21 @@ export class CalendarService {
 
     const nextMonthDays = Array(numberOfDaysLeft).fill(null).map(() => []);
 
-    return [...previousMonthDays, ...selectedMonthDays, ...nextMonthDays];
+    const newMonth: any = [...previousMonthDays, ...selectedMonthDays, ...nextMonthDays];
+    newMonth.meta = {year: dateTime.year, month: dateTime.month};
+    return newMonth;
   }
 
   static addSchedulesToMonth(month: Day[], scheduleGroup: ScheduleGroup): Day[] {
     return month.map((day: Day) => {
       const category = day && day.meta && day.meta.category;
-      if (!category) { return []; }
+      if (!category) {
+        return [];
+      }
       const schedules = scheduleGroup[category];
-      if (!schedules) { return day; }
+      if (!schedules) {
+        return day;
+      }
       const sortedSchedules = [...schedules].sort((a: Schedule, b: Schedule) => a.start - b.start);
       day.push(...sortedSchedules);
       return day;

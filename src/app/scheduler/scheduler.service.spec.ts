@@ -1,10 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { SchedulerService } from './scheduler.service';
-import { SimpleDate, SimpleTime, SimpleDateTime } from './scheduler.types';
+import {SchedulerService} from './scheduler.service';
+import {SimpleDate, SimpleDateTime, SimpleTime} from './scheduler.types';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('SchedulerService', () => {
   beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+      HttpClientTestingModule
+    ],
     providers: [SchedulerService]
   }));
 
@@ -31,7 +35,7 @@ describe('SchedulerService', () => {
     it('should convert timestamp to SimpleTime', () => {
       const timestamp = 1547249260794;
       const simpleTime: SimpleTime = SchedulerService.toSimpleTime(timestamp);
-      expect(simpleTime).toEqual({ hour: 8, minute: 27 });
+      expect(simpleTime).toEqual({hour: 8, minute: 27});
     });
   });
 
