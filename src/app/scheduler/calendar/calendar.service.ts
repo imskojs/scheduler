@@ -17,12 +17,10 @@ export class CalendarService {
     const firstDayOfWeek = getFirstDayOfWeek(year, month);
     const numberOfDaysLeft = TOTAL_CELLS - daysInCurrMonth - firstDayOfWeek;
 
-    const daysInPrevMonth = getDaysInMonth(year, month - 1);
-
     const previousMonthDays = Array(firstDayOfWeek).fill(null).map(() => []);
 
     const selectedMonthDays: Day[] = Array(daysInCurrMonth).fill(null).map((_, index) => {
-      const day: Day = <any>[];
+      const day: Day = [];
       day.meta = {
         category: toCategory(year, month, index + 1),
         year, month,

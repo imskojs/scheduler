@@ -1,12 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ControlComponent } from './control.component';
-import { SchedulerService } from '../scheduler.service';
 import { SimpleDateTime } from '../scheduler.types';
 import { ControlService } from './control.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 describe('ControlComponent', () => {
   let controlService: jasmine.SpyObj<ControlService>;
@@ -35,8 +33,8 @@ describe('ControlComponent', () => {
 
   beforeEach(() => {
     controlService = TestBed.get(ControlService);
-    const currentDateStub: SimpleDateTime = {year: 2019, month: 1, day: 12, daysOfWeek: 'saturday', hour: 8, minute: 27 };
-    const nextDateStub: SimpleDateTime = {year: 2019, month: 2, day: 12, daysOfWeek: 'saturday', hour: 11, minute: 27 };
+    const currentDateStub: SimpleDateTime = {year: 2019, month: 1, day: 12, daysOfWeek: 6, hour: 8, minute: 27 };
+    const nextDateStub: SimpleDateTime = {year: 2019, month: 2, day: 12, daysOfWeek: 6, hour: 11, minute: 27 };
     controlService.getSelectedDate.and.returnValue(of(currentDateStub));
     controlService.getSelectedDateType.and.returnValue(of('month'));
     controlService.getNextDate.and.returnValue(of(nextDateStub));

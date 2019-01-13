@@ -21,7 +21,8 @@ describe('SchedulerService', () => {
         year: 2019,
         month: 1,
         day: 12,
-        daysOfWeek: 6
+        daysOfWeek: 6,
+        category: '20190112'
       });
     });
   });
@@ -42,7 +43,8 @@ describe('SchedulerService', () => {
         day: 12,
         daysOfWeek: 6,
         hour: 8,
-        minute: 27
+        minute: 27,
+        category: '20190112'
       };
       const timestamp = SchedulerService.toTimestamp(simpleDateTime);
       expect(timestamp).toEqual(1547249220000);
@@ -60,7 +62,8 @@ describe('SchedulerService', () => {
         day: 12,
         daysOfWeek: 6,
         hour: 8,
-        minute: 27
+        minute: 27,
+        category: '20190112'
       });
     });
 

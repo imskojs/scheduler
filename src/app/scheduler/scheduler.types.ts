@@ -7,9 +7,9 @@ export interface ScheduleGroup  {
   [key: string]: Schedule[];
 }
 
-export interface Day {
+export interface Day extends Array<any> {
   [key: number]: Schedule;
-  meta: {
+  meta?: {
     category: string,
     year: number,
     month: number,

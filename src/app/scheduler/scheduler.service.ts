@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { SimpleDate, SimpleTime, SimpleDateTime } from './scheduler.types';
+import {Injectable} from '@angular/core';
+import {Schedule, ScheduleGroup, SimpleDate, SimpleDateTime, SimpleTime} from './scheduler.types';
+import {Observable, of} from 'rxjs';
 
 @Injectable()
 export class SchedulerService {
@@ -12,7 +13,7 @@ export class SchedulerService {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const daysOfWeek = date.getDay();
-    const category = SchedulerService.toCategory(year, month , day);
+    const category = SchedulerService.toCategory(year, month, day);
     return { year, month, day, daysOfWeek, category };
   }
 
@@ -33,8 +34,7 @@ export class SchedulerService {
   static toSimpleDateTime(timestamp: number): SimpleDateTime {
     const simpleDate = SchedulerService.toSimpleDate(timestamp);
     const simpleTime = SchedulerService.toSimpleTime(timestamp);
-    const simpleDateTime: SimpleDateTime = Object.assign({}, simpleDate, simpleTime);
-    return simpleDateTime;
+    return Object.assign({}, simpleDate, simpleTime);
   }
 
   static getDaysInMonth(year, month): number {
