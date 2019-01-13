@@ -6,14 +6,20 @@ import {ControlService} from '../control/control.service';
 import {SimpleDateTime} from '../scheduler.types';
 import {of} from 'rxjs';
 import {SchedulerService} from '../scheduler.service';
+import {FormsModule} from '@angular/forms';
 
-@Component({
-  selector: 'scheduler-calendar-day',
-  template: '',
-})
+@Component({selector: 'scheduler-calendar-day', template: ''})
 class CalendarDayStubComponent {
   @Input() day: [];
   @Input() index: number;
+}
+
+@Component({selector: 'ngb-datepicker', template: ''})
+class NgbDatePickerStubComponent {
+}
+
+@Component({selector: 'ngb-timepicker', template: ''})
+class NgbTimePickerStubComponent {
 }
 
 describe('CalendarMonthlyComponent', () => {
@@ -29,9 +35,14 @@ describe('CalendarMonthlyComponent', () => {
       ''
     ]);
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule
+      ],
       declarations: [
         CalendarMonthlyComponent,
-        CalendarDayStubComponent
+        CalendarDayStubComponent,
+        NgbDatePickerStubComponent,
+        NgbTimePickerStubComponent
       ],
       providers: [
         {provide: ControlService, useValue: controlServiceMock},

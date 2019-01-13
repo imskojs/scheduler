@@ -2,8 +2,45 @@
   <scheduler-calendar-day
     class="day"
     *ngFor=" let day of (monthView$ | async); let i = index; trackBy: trackByDayId "
+    (click)="openModal(content, day)"
     [day]=" day "
-    [index] = "i"
+    [index]="i"
   >
   </scheduler-calendar-day>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">일정 관리</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <h5>일정 제목</h5>
+      <div class="input-group">
+        <input type="text" [(ngModel)]="title">
+      </div>
+      <h5>일정 내용</h5>
+      <div class="input-group">
+        <input type="text" [(ngModel)]="memo">
+      </div>
+      <br>
+      <h5>일정 날짜</h5>
+      <div class="input-group">
+        <ngb-datepicker [(ngModel)]="date"></ngb-datepicker>
+      </div>
+      <br>
+      <h5>일정 시간</h5>
+      <div class="input-group">
+        시작
+        <ngb-timepicker [(ngModel)]="start" minuteStep="0"></ngb-timepicker>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        끝
+        <ngb-timepicker [(ngModel)]="end" minuteStep="0"></ngb-timepicker>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('save')">저장</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('cancel')">취소</button>
+  </div>
+</ng-template>
