@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Schedule, ScheduleGroup, SimpleDate, SimpleDateTime, SimpleTime} from './scheduler.types';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 
 @Injectable()
 export class SchedulerService {
 
-  constructor() { }
+  private addScheduleSub: Subject<Schedule> = new Subject<Schedule>();
+
+  constructor() {
+  }
 
   static toSimpleDate(timestamp: number): SimpleDate {
     const date = new Date(timestamp);
@@ -14,19 +17,19 @@ export class SchedulerService {
     const day = date.getDate();
     const daysOfWeek = date.getDay();
     const category = SchedulerService.toCategory(year, month, day);
-    return { year, month, day, daysOfWeek, category };
+    return {year, month, day, daysOfWeek, category};
   }
 
   static toSimpleTime(timestamp: number): SimpleTime {
     const date = new Date(timestamp);
     const hour = date.getHours();
     const minute = date.getMinutes();
-    return { hour, minute };
+    return {hour, minute};
   }
 
   static toTimestamp(simpleDateTime: SimpleDateTime): number {
-    const { year, day, hour, minute = 0 } = simpleDateTime;
-    let { month } = simpleDateTime;
+    const {year, day, hour, minute = 0} = simpleDateTime;
+    let {month} = simpleDateTime;
     const date = new Date(year, --month, day, hour, minute);
     return date.getTime();
   }
@@ -45,6 +48,7 @@ export class SchedulerService {
     const date = new Date(year, month - 1, 1);
     return date.getDay(); // 0: sunday, ~ 6: saturday
   }
+
   static toCategory(year, month, day) {
     return `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
   }

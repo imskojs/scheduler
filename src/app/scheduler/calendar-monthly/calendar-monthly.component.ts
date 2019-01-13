@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ControlService} from '../control/control.service';
 import {Day, Schedule, ScheduleGroup, SimpleDateTime} from '../scheduler.types';
-import {distinctUntilChanged, map, mergeMap} from 'rxjs/operators';
+import {distinctUntilChanged, map, mergeMap, withLatestFrom} from 'rxjs/operators';
 import {SchedulerService} from '../scheduler.service';
 import {CalendarService} from '../calendar/calendar.service';
-import {Observable, of, zip} from 'rxjs';
+import {merge, Observable, of, zip} from 'rxjs';
 
 const {groupSchedules} = SchedulerService;
 const {generateMonth, addSchedulesToMonth} = CalendarService;
@@ -16,6 +16,8 @@ const {generateMonth, addSchedulesToMonth} = CalendarService;
 })
 export class CalendarMonthlyComponent implements OnInit {
 
+  private monthGenerator$: Observable<Day[]>;
+
   public monthView$: Observable<Day[]>;
 
   constructor(
@@ -24,13 +26,15 @@ export class CalendarMonthlyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.monthView$ = this.controlService.getSelectedDate().pipe(
+    this.monthGenerator$ = this.controlService.getSelectedDate().pipe(
       distinctUntilChanged((prev: SimpleDateTime, curr: SimpleDateTime) => prev.month === curr.month),
+      map((dateTime: SimpleDateTime) => generateMonth(dateTime))
+    );
 
-      map((dateTime: SimpleDateTime) => generateMonth(dateTime)),
 
-      mergeMap((month) => zip(of(month), this.scheduleService.getSchedules(1, null))),
-
+    this.monthView$ = merge(this.monthGenerator$).pipe(
+      withLatestFrom(this.monthGenerator$),
+      mergeMap(([_, month]) => zip(of(month), this.scheduleService.getSchedules(1, null))),
       map(([month, schedules]: [Day[], Schedule[]]) => {
         const scheduleGroup: ScheduleGroup = groupSchedules(schedules);
         return addSchedulesToMonth(month, scheduleGroup);
