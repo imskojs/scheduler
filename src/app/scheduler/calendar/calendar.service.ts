@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SimpleDateTime } from '../scheduler.types';
+import { SimpleDateTime, Schedule, ScheduleGroup, Day } from '../scheduler.types';
 import { SchedulerService } from '../scheduler.service';
 
 const { getDaysInMonth, getFirstDayOfWeek, toCategory } = SchedulerService;
@@ -21,8 +21,8 @@ export class CalendarService {
 
     const previousMonthDays = Array(firstDayOfWeek).fill(null).map(() => []);
 
-    const selectedMonthDays: [][] = Array(daysInCurrMonth).fill(null).map((_, index) => {
-      const day: any = [];
+    const selectedMonthDays: Day[] = Array(daysInCurrMonth).fill(null).map((_, index) => {
+      const day: Day = <any>[];
       day.meta = {
         category: toCategory(year, month, index + 1),
         year, month,
@@ -37,7 +37,7 @@ export class CalendarService {
     return [...previousMonthDays, ...selectedMonthDays, ...nextMonthDays];
   }
 
-  static addSchedulesToMonth(month: any[][], schedules: []) {
+  static addSchedulesToMonth(month: Day[], schedules: ScheduleGroup) {
 
   }
 
