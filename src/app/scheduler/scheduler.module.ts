@@ -11,6 +11,7 @@ import { ControlService } from './control/control.service';
 import { CalendarService } from './calendar/calendar.service';
 import { SchedulerService } from './scheduler.service';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
   ],
   imports: [
     CommonModule,
+    NgbModule,
     SchedulerRoutingModule
   ],
   exports: [
