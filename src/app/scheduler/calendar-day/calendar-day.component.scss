@@ -1,0 +1,22 @@
+.days-of-week {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px 0;
+}
+
+.schedules {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 0;
+  .schedule {
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 4px;
+    padding: 3px;
+    border: 1px solid grey;
+    display: flex;
+    .start { min-width: 32px; }
+    .title { margin-left: 5px; }
+  }
+
+}

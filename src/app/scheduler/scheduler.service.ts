@@ -63,15 +63,20 @@ export class SchedulerService {
     // http goes here
     return of([
       {
+        start: 17, count: 1, end: 18,
+        category: '20190121', year: 2019, month: 1,
+        day: 21, daysOfWeek: 4, title: '돈대크반 돈대기리기리asdfasdfasdfasdfasdfasdf', content: '노래를 한다네 므매 돈돈돈을? 뭥? 미? 졸려미?'
+      },
+      {
         start: 12, count: 1, end: 13,
         category: '20190121', year: 2019, month: 1,
-        day: 21, daysOfWeek: 4
+        day: 21, daysOfWeek: 4, title: '카카오와', content: '춤을 춘다네 음매'
       },
       {
         start: 13, count: 1, end: 14,
-        category: '20190122', year: 2019, month: 1,
-        day: 21, daysOfWeek: 4
-      }
+        category: '20190121', year: 2019, month: 1,
+        day: 21, daysOfWeek: 4, title: '구구릴', content: '노래를 한다네 므매'
+      },
     ]);
   }
 

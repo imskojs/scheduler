@@ -1,13 +1,12 @@
-<div class="day-array">
-  <div *ngIf=" !day?.meta ">
-    EMPTY
-  </div>
-
-  {{day?.meta | json}}
-
-
-  <div *ngFor=" let schedule of day ">
-    {{ schedule | json}}
-  </div>
-
+<div class="days-of-week">
+  <span> {{renderDaysOfWeek(index)}} </span>
+  <span> {{ day?.meta?.day }} </span>
 </div>
+<div class="schedules">
+  <div class="schedule"
+       *ngFor=" let schedule of day ">
+    <span class="start">{{schedule.start}}시</span>
+    <span class="title">{{schedule.title}}</span>
+  </div>
+</div>
+

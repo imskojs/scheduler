@@ -1,0 +1,13 @@
+.days-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid black;
+  .day {
+    flex: 1 0 13.5%;
+    border: 1px solid black;
+    height: 150px;
+    overflow: scroll;
+    user-select: none;
+    cursor: pointer;
+  }
+}

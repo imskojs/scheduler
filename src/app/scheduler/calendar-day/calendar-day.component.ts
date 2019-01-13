@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Day} from '../scheduler.types';
+
+const DAY_MAP = {[0]: '일', [1]: '월', [2]: '화', [3]: '수', [4]: '목', [5]: '금', [6]: '토'};
 
 @Component({
   selector: 'scheduler-calendar-day',
@@ -9,9 +11,18 @@ import {Day} from '../scheduler.types';
 export class CalendarDayComponent implements OnInit {
 
   @Input() day: Day;
-  constructor() { }
+  @Input() index: number;
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  public renderDaysOfWeek(index) {
+    if (index < 7) {
+      return DAY_MAP[index];
+    }
   }
 
 }

@@ -1,7 +1,9 @@
 <div class="days-container">
   <scheduler-calendar-day
-    *ngFor=" let day of (monthView$ | async); trackBy: trackByDayId "
+    class="day"
+    *ngFor=" let day of (monthView$ | async); let i = index; trackBy: trackByDayId "
     [day]=" day "
+    [index] = "i"
   >
   </scheduler-calendar-day>
 </div>

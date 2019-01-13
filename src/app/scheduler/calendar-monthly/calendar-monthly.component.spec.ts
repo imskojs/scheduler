@@ -13,6 +13,7 @@ import {SchedulerService} from '../scheduler.service';
 })
 class CalendarDayStubComponent {
   @Input() day: [];
+  @Input() index: number;
 }
 
 describe('CalendarMonthlyComponent', () => {
