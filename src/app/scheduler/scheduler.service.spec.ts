@@ -21,7 +21,7 @@ describe('SchedulerService', () => {
         year: 2019,
         month: 1,
         day: 12,
-        daysOfWeek: 'saturday'
+        daysOfWeek: 6
       });
     });
   });
@@ -40,7 +40,7 @@ describe('SchedulerService', () => {
         year: 2019,
         month: 1,
         day: 12,
-        daysOfWeek: 'saturday',
+        daysOfWeek: 6,
         hour: 8,
         minute: 27
       };
@@ -58,7 +58,7 @@ describe('SchedulerService', () => {
         year: 2019,
         month: 1,
         day: 12,
-        daysOfWeek: 'saturday',
+        daysOfWeek: 6,
         hour: 8,
         minute: 27
       });
