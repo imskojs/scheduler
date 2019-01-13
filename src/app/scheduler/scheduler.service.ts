@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SimpleDate, SimpleTime, SimpleDateTime } from './scheduler.types';
 
-const daysOfWeekMap = {
-  [1]: 'monday', [2]: 'tuesday', [3]: 'wednesday', [4]: 'thursday',
-  [5]: 'friday', [6]: 'saturday', [7]: 'sunday'
-};
-
 @Injectable()
 export class SchedulerService {
 
@@ -16,7 +11,7 @@ export class SchedulerService {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const daysOfWeek = daysOfWeekMap[date.getDay()];
+    const daysOfWeek = date.getDay();
     return { year, month, day, daysOfWeek };
   }
 
@@ -43,6 +38,11 @@ export class SchedulerService {
 
   static getDaysInMonth(year, month): number {
     return new Date(year, month, 0).getDate();
+  }
+
+  static getFirstDayOfWeek(year, month) {
+    const date = new Date(year, month - 1, 1);
+    return date.getDay(); // 0: sunday, ~ 6: saturday
   }
 
 }

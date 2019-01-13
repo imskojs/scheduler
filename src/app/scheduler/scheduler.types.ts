@@ -1,7 +1,3 @@
-
-type DaysOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' |
-  'friday' | 'saturday' | 'sunday';
-
 export type DateType = 'month'|'week';
 export type Direction = 'prev' | 'next';
 
@@ -11,14 +7,14 @@ export class SimpleDateTime {
   day: number;
   hour: number;
   minute: number;
-  daysOfWeek: DaysOfWeek;
+  daysOfWeek: number;
 }
 
 export class SimpleDate {
   year: number;
   month: number;
   day: number;
-  daysOfWeek: DaysOfWeek;
+  daysOfWeek: number;
 }
 
 export class SimpleTime {
