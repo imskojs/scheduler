@@ -56,6 +56,9 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
   }
 
   public openModal(content, day) {
+    if (!(day && day.meta)) {
+      return;
+    }
     this.date = day && day.meta;
     const start = toSimpleTime(Date.now());
     start.minute = 0;
