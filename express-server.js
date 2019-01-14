@@ -1,7 +1,6 @@
 const app = require('express')();
-const port = 3000;
 const loki = require('lokijs');
-// $loki is ID
+const bodyParser = require('body-parser');
 let schedules;
 const db = new loki('loki.json', {
   autoload: true,
@@ -10,12 +9,22 @@ const db = new loki('loki.json', {
   autosaveInterval: 4000
 });
 
-app.get('/schedule', (req, res) => {
-  const data = schedules.find({month: 1});
-  return res.send(data)
+app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
+app.post('/schedules', (req, res) => {
+  console.log(req.body);
+  return res.send(req.body)
+});
+const port = 3000;
+app.listen(port, () => console.log(`expres running at http://localhost:${port}`));
 
+// Helpers
 function databaseInitialize() {
   schedules = db.getCollection("schedules");
   if (schedules === null) {
@@ -52,4 +61,3 @@ function databaseInitialize() {
   }
 }
 
-app.listen(port, () => console.log(`expres running at http://localhost:${port}`));
