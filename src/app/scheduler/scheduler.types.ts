@@ -45,9 +45,9 @@ export class SimpleTime {
 
 export class Schedule {
   title: string;
-  content: string;
+  content?: string;
   start: number;
-  count: number;
+  count?: number;
   end: number;
   category: string;
   year: number;

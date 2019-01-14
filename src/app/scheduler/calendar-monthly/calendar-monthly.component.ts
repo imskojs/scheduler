@@ -82,7 +82,7 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
 
   private handleSave() {
     const schedule: Schedule = {
-      title: this.title, content: this.memo, start: this.start.hour,
+      title: this.title, start: this.start.hour,
       count: Math.floor(this.end.hour - this.start.hour), end: this.end.hour,
       category: toCategory(this.date.year, this.date.month, this.date.day),
       year: this.date.year, month: this.date.month, day: this.date.day
