@@ -68,12 +68,8 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
     this.end = end;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result
       .then((result: 'save' | 'update') => this.handleSave())
-      .then(month => {
-        this.month = month;
-      })
-      .catch((reason) => {
-        this.handleCancel();
-      });
+      .then(() => this.calendarService.renderMonth())
+      .catch((reason) => this.handleCancel());
   }
 
   public trackByDayId(index, day) {
@@ -88,20 +84,7 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
       year: this.date.year, month: this.date.month, day: this.date.day
     };
     this.title = '';
-    return this.scheduleService.addSchedule(schedule).then((schedules: Schedule[]) => {
-      const scheduleGroup = groupSchedules(schedules);
-      return of(scheduleGroup).pipe(
-        withLatestFrom(this.monthGenerator$, this.controlService.getSelectedDate()),
-        map(([grouped, month, simpleDateTime]) => {
-          const monthMeta = (month as any).meta;
-          if (simpleDateTime.year === monthMeta.year && simpleDateTime.month === monthMeta.month) {
-            return addSchedulesToMonth(month, grouped);
-          }
-          return month;
-        })
-      ).toPromise();
-    });
-
+    return this.scheduleService.addSchedule(schedule);
   }
 
   private handleCancel() {
