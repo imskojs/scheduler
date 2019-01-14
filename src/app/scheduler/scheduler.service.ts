@@ -47,6 +47,11 @@ export class SchedulerService {
     return date.getDay(); // 0: sunday, ~ 6: saturday
   }
 
+  static getDayOfWeek(year, month, day) {
+    const date = new Date(year, month - 1, day);
+    return date.getDay();
+  }
+
   static toCategory(year, month, day) {
     return `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
   }
@@ -74,9 +79,9 @@ export class SchedulerService {
   }
 
 
-  public getSchedules(year: number, month: number): Promise<Schedule[]> {
+  public getSchedules(year: number, month: number, day: number = 0): Promise<Schedule[]> {
     // http goes here
-    return this.httpClient.get<Schedule[]>(`http://localhost:3000/schedules/${year}/${month}`).toPromise();
+    return this.httpClient.get<Schedule[]>(`http://localhost:3000/schedules/${year}/${month}/${day}`).toPromise();
   }
 
 

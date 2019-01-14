@@ -8,7 +8,7 @@ import {merge, Observable, of, Subject, zip} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 const {groupSchedules, toCategory, toSimpleTime} = SchedulerService;
-const {generateMonth, addSchedulesToMonth, emptySchedules} = CalendarService;
+const {generateMonth, addSchedules, emptySchedules} = CalendarService;
 
 @Component({
   selector: 'scheduler-calendar-monthly',
@@ -45,7 +45,7 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
       mergeMap(([_, month, date]) => zip(of(month), this.scheduleService.getSchedules(date.year, date.month))),
       map(([month, schedules]: [Day[], Schedule[]]) => {
         const scheduleGroup: ScheduleGroup = groupSchedules(schedules);
-        return addSchedulesToMonth(emptySchedules(month), scheduleGroup);
+        return addSchedules(emptySchedules(month), scheduleGroup);
       }),
       takeUntil(this.UNSUB)
     ).subscribe(month => this.month = month);

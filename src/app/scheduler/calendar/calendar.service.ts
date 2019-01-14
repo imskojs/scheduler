@@ -3,13 +3,16 @@ import {Day, Schedule, ScheduleGroup, SimpleDateTime} from '../scheduler.types';
 import {SchedulerService} from '../scheduler.service';
 import {Observable, Subject} from 'rxjs';
 
-const {getDaysInMonth, getFirstDayOfWeek, toCategory} = SchedulerService;
+const {getDaysInMonth, getFirstDayOfWeek, toCategory, getDayOfWeek} = SchedulerService;
 
 @Injectable()
 export class CalendarService {
 
   private renderMonthSub: Subject<boolean> = new Subject();
   public renderMonth$: Observable<boolean> = this.renderMonthSub.asObservable();
+
+  private renderWeekSub: Subject<boolean> = new Subject();
+  public renderWeek$: Observable<boolean> = this.renderWeekSub.asObservable();
 
   constructor() {
   }
@@ -42,7 +45,40 @@ export class CalendarService {
     return newMonth;
   }
 
-  static addSchedulesToMonth(month: Day[], scheduleGroup: ScheduleGroup): Day[] {
+  static generateWeek(dateTime: SimpleDateTime) {
+    const TOTAL_CELLS = 7;
+    const MILLIDAY = 24 * 60 * 60 * 1000;
+    const {year, month, day} = dateTime;
+    const numberOfDaysBefore = getDayOfWeek(year, month, day);
+    const numberOfDaysAfter = TOTAL_CELLS - (numberOfDaysBefore + 1);
+    const baseTimeStamp = SchedulerService.toTimestamp(dateTime);
+    const daysBefore: SimpleDateTime[] = Array(numberOfDaysBefore).fill(null).map((_, i) => {
+      const milliDayToSubtract = MILLIDAY * (i + 1);
+      const newTimeStamp = Math.floor(baseTimeStamp - milliDayToSubtract);
+      return SchedulerService.toSimpleDateTime(newTimeStamp);
+    }).reverse();
+    const daysAfter: SimpleDateTime[] = Array(numberOfDaysAfter).fill(null).map((_, i) => {
+      const milliDayToAdd = MILLIDAY * (i + 1);
+      const newTimeStamp = Math.floor(baseTimeStamp + milliDayToAdd);
+      return SchedulerService.toSimpleDateTime(newTimeStamp);
+    });
+    const week: SimpleDateTime[] = daysBefore.concat([dateTime]).concat(daysAfter);
+    const newWeek: any = week.map((simpleDateTime, i) => {
+      const dayOne: Day = [];
+      dayOne.meta = {
+        category: toCategory(year, month, dateTime.day),
+        year, month,
+        day: dateTime.day,
+        daysOfWeek: i
+      };
+      return dayOne;
+    });
+    const firstDay = newWeek[0];
+    newWeek.meta = {year: firstDay.meta.year, month: firstDay.meta.month, day: firstDay.meta.day};
+    return newWeek;
+  }
+
+  static addSchedules(month: Day[], scheduleGroup: ScheduleGroup): Day[] {
     return month.map((day: Day) => {
       const category = day && day.meta && day.meta.category;
       if (!category) {
@@ -65,6 +101,9 @@ export class CalendarService {
 
   public renderMonth(): void {
     this.renderMonthSub.next();
+  }
+  public renderWeek(): void {
+    this.renderWeekSub.next();
   }
 
 }
