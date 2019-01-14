@@ -11,15 +11,32 @@ const db = new loki('loki.json', {
 
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 app.post('/schedules', (req, res) => {
-  console.log(req.body);
-  return res.send(req.body)
+  const {month, category, start, end} = req.body;
+  const overlaps = schedules.where(function (schedule) {
+    if (schedule.category === category) {
+      if (schedule.end > start && schedule.start <= end ||
+        schedule.start < end && schedule.end > start
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+  if (overlaps.length) {
+    return res.status(401).send({
+      message: 'overlaps'
+    });
+  }
+  schedules.insert(req.body);
+  const updatedMonth = schedules.find({month});
+  return res.send(updatedMonth);
 });
 const port = 3000;
 app.listen(port, () => console.log(`expres running at http://localhost:${port}`));
