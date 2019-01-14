@@ -69,6 +69,10 @@ export class SchedulerService {
     return this.httpClient.put('http://localhost:3000/schedules', schedule).toPromise();
   }
 
+  public deleteSchedule(schedule) {
+    return this.httpClient.delete(`http://localhost:3000/schedules/${schedule.$loki}`).toPromise();
+  }
+
 
   public getSchedules(year: number, month: number): Promise<Schedule[]> {
     // http goes here

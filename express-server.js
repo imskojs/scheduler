@@ -85,6 +85,13 @@ app.put('/schedules', async (req, res) => {
   return res.send(updatedMonth);
 });
 
+app.delete('/schedules/:id', async (req, res) => {
+  var x = schedules.remove({'$loki': req.params.id});
+  const {month} = req.body;
+  const updatedMonth = schedules.find({month});
+  return res.send(updatedMonth);
+});
+
 const port = 3000;
 app.listen(port, () => console.log(`expres running at http://localhost:${port}`));
 

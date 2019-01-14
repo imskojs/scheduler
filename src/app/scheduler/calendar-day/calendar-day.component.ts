@@ -71,6 +71,7 @@ export class CalendarDayComponent implements OnInit {
     if (intent === 'update') {
       return this.scheduleService.updateSchedule(schedule);
     }
+    return this.scheduleService.deleteSchedule(schedule);
   }
 
 
