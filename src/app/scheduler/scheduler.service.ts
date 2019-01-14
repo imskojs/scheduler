@@ -62,8 +62,11 @@ export class SchedulerService {
   }
 
   public addSchedule(schedule) {
-    // should return Schedules of of updating schedule Year, Month;
     return this.httpClient.post('http://localhost:3000/schedules', schedule).toPromise();
+  }
+
+  public updateSchedule(schedule) {
+    return this.httpClient.put('http://localhost:3000/schedules', schedule).toPromise();
   }
 
 

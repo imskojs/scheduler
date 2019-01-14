@@ -13,10 +13,19 @@ app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
+//TODO: validation
+
+app.use(function (req, res, next) {
+  if(!req.body) {
+    return next();
+  }
+  next();
+})
 // post
 app.post('/schedules', (req, res) => {
   const {month, category, start, end} = req.body;
@@ -48,7 +57,32 @@ app.get('/schedules/:year/:month', (req, res) => {
     return obj.year === +year && obj.month === +month;
   });
   return res.send(requestedMonth);
+});
 
+// put
+app.put('/schedules', async (req, res) => {
+  const id = req.body.$loki;
+  schedules.remove({'$loki': id});
+  const {month, category, start, end} = req.body;
+  const overlaps = schedules.where(function (schedule) {
+    if (schedule.category === category) {
+      if (schedule.end > start && schedule.start <= end ||
+        schedule.start < end && schedule.end > start
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+  if (overlaps.length) {
+    return res.status(401).send({
+      message: 'overlaps'
+    });
+  }
+  delete req.body.$loki;
+  schedules.insert(req.body);
+  const updatedMonth = schedules.find({month});
+  return res.send(updatedMonth);
 });
 
 const port = 3000;

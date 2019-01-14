@@ -4,9 +4,44 @@
 </div>
 <div class="schedules">
   <div class="schedule"
+       (click)="openUpdateModal(contentDay, schedule, $event)"
        *ngFor=" let schedule of day ">
     <span class="start">{{schedule.start}}시</span>
     <span class="title">{{schedule.title}}</span>
   </div>
 </div>
+
+<ng-template #contentDay let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">일정 관리</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <h5>일정 제목</h5>
+      <div class="input-group">
+        <label>
+          <input type="text" [(ngModel)]="title">
+        </label>
+      </div>
+      <br>
+      <h5>일정 날짜</h5>
+      <div class="input-group">
+        <ngb-datepicker [(ngModel)]="date"></ngb-datepicker>
+      </div>
+      <br>
+      <h5>일정 시간</h5>
+      <div class="input-group">
+        시작
+        <ngb-timepicker [(ngModel)]="start" minuteStep="0"></ngb-timepicker>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        끝
+        <ngb-timepicker [(ngModel)]="end" minuteStep="0"></ngb-timepicker>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('update')">저장</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('cancel')">취소</button>
+  </div>
+</ng-template>
 

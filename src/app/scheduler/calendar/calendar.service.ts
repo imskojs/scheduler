@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Day, Schedule, ScheduleGroup, SimpleDateTime} from '../scheduler.types';
 import {SchedulerService} from '../scheduler.service';
+import {Observable, Subject} from 'rxjs';
 
 const {getDaysInMonth, getFirstDayOfWeek, toCategory} = SchedulerService;
 
 @Injectable()
 export class CalendarService {
+
+  private renderMonthSub: Subject<boolean> = new Subject();
+  public renderMonth$: Observable<boolean> = this.renderMonthSub.asObservable();
 
   constructor() {
   }
@@ -54,5 +58,13 @@ export class CalendarService {
     });
   }
 
+  static emptySchedules(month: Day[]): Day[] {
+    month.forEach(day => day.length = 0);
+    return month;
+  }
+
+  public renderMonth(): void {
+    this.renderMonthSub.next();
+  }
 
 }

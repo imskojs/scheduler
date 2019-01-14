@@ -54,6 +54,7 @@ export class Schedule {
   month: number;
   day: number;
   daysOfWeek?: number;
+  $loki?: number;
 }
 
 
