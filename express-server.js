@@ -17,6 +17,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+// post
 app.post('/schedules', (req, res) => {
   const {month, category, start, end} = req.body;
   const overlaps = schedules.where(function (schedule) {
@@ -38,6 +39,18 @@ app.post('/schedules', (req, res) => {
   const updatedMonth = schedules.find({month});
   return res.send(updatedMonth);
 });
+
+// get
+app.get('/schedules/:year/:month', (req, res) => {
+  const {year, month} = req.params;
+  console.log(year, month);
+  const requestedMonth = schedules.where(function (obj) {
+    return obj.year === +year && obj.month === +month;
+  });
+  return res.send(requestedMonth);
+
+});
+
 const port = 3000;
 app.listen(port, () => console.log(`expres running at http://localhost:${port}`));
 
@@ -58,20 +71,20 @@ function databaseInitialize() {
         day: 21, daysOfWeek: 4, title: '구구릴'
       },
       {
-        year: 2019, month: 1, day: 21, category: '20190121',
+        year: 2019, month: 1, day: 22, category: '20190122',
         start: 12, count: 1, end: 13, daysOfWeek: 4, title: '타이틀 입니다 1',
         content: '노래를 한다네 므매'
       },
       {
-        year: 2019, month: 1, day: 22, category: '20190121',
+        year: 2019, month: 1, day: 22, category: '201901212',
         start: 13, count: 1, end: 14, daysOfWeek: 4, title: '타이틀 입니다 2'
       },
       {
-        year: 2019, month: 1, day: 22, category: '20190121',
+        year: 2019, month: 1, day: 22, category: '20190122',
         start: 14, count: 1, end: 15, daysOfWeek: 4, title: '타이틀 입니다 3'
       },
       {
-        year: 2019, month: 1, day: 22, category: '20190121',
+        year: 2019, month: 1, day: 22, category: '20190122',
         start: 15, count: 1, end: 16, daysOfWeek: 4, title: '타이틀 입니다 4'
       },
     ])

@@ -41,8 +41,8 @@ export class CalendarMonthlyComponent implements OnInit, OnDestroy {
     );
 
     this.monthGenerator$.pipe(
-      withLatestFrom(this.monthGenerator$),
-      mergeMap(([_, month]) => zip(of(month), this.scheduleService.getSchedules(1, null))),
+      withLatestFrom(this.monthGenerator$, this.controlService.getSelectedDate()),
+      mergeMap(([_, month, date]) => zip(of(month), this.scheduleService.getSchedules(date.year, date.month))),
       map(([month, schedules]: [Day[], Schedule[]]) => {
         const scheduleGroup: ScheduleGroup = groupSchedules(schedules);
         return addSchedulesToMonth(month, scheduleGroup);
