@@ -64,18 +64,6 @@ describe('ControlComponent', () => {
     });
   });
 
-  it('should have selectedDateTypeView initialized with the most recent value returned from getSelectedDateType', () => {
-    fixture.detectChanges();
-    const monthDe = fixture.debugElement.query(By.css('.month'));
-    const weekDe = fixture.debugElement.query(By.css('.week'));
-    expect(monthDe.nativeElement.classList.contains('active')).toBe(true, 'contains active class');
-    expect(weekDe.nativeElement.classList.contains('active')).toBe(false, 'not contain active class');
-    controlService.getSelectedDateType.and.returnValue(of('week'));
-    component.ngOnInit(); // force init the second time.
-    fixture.detectChanges();
-    expect(monthDe.nativeElement.classList.contains('active')).toBe(false, 'not contains active class');
-    expect(weekDe.nativeElement.classList.contains('active')).toBe(true, 'contain active class');
-  });
 
   it('should call controlService#selectDateType with correct DateType on click on month or week', () => {
     fixture.detectChanges();
