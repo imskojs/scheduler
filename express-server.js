@@ -8,7 +8,7 @@ const db = new loki('loki.json', {
   autosave: true,
   autosaveInterval: 4000
 });
-
+app.use(express.static('dist'))
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
@@ -21,8 +21,19 @@ app.use(function (req, res, next) {
 //TODO: validation
 
 app.use(function (req, res, next) {
-  if (!req.body) {
+  if (!req.body.year) {
     return next();
+  }
+  const {start, end, title} = req.body;
+  if(start >= end ) {
+    return res.status(401).send({
+      message: '일정 시작시간이 끝나는 시간보다 작아야 합니다'
+    });
+  }
+  if(!title) {
+    return res.status(401).send({
+      message: '일정을 써주세요'
+    });
   }
   next();
 });
@@ -41,7 +52,7 @@ app.post('/schedules', (req, res) => {
   });
   if (overlaps.length) {
     return res.status(401).send({
-      message: 'overlaps'
+      message: '이미 일정이 있는 시간 입니다'
     });
   }
   schedules.insert(req.body);
@@ -52,7 +63,7 @@ app.post('/schedules', (req, res) => {
 // get
 app.get('/schedules/:year/:month/:day', (req, res) => {
   const {year, month, day} = req.params;
-  if(+day === 99) {
+  if (+day === 99) {
     const requestedMonth = schedules.where(function (obj) {
       return obj.year === +year && obj.month === +month;
     });
@@ -62,7 +73,7 @@ app.get('/schedules/:year/:month/:day', (req, res) => {
   const MILLIDAY = 24 * 60 * 60 * 1000;
   const beginning = timestamp - MILLIDAY * 7;
   const end = timestamp + MILLIDAY * 7;
-  const requestedWeek = schedules.where(function(obj){
+  const requestedWeek = schedules.where(function (obj) {
     return obj.timestamp > beginning && obj.timestamp < end;
   });
   return res.send(requestedWeek);
@@ -85,7 +96,7 @@ app.put('/schedules', async (req, res) => {
   });
   if (overlaps.length) {
     return res.status(401).send({
-      message: 'overlaps'
+      message: '이미 일정이 있는 시간 입니다'
     });
   }
   delete req.body.$loki;

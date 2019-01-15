@@ -68,7 +68,10 @@ export class SchedulerService {
 
   public addSchedule(schedule: Schedule) {
     schedule.timestamp = SchedulerService.toTimestamp(schedule);
-    return this.httpClient.post('http://localhost:3000/schedules', schedule).toPromise();
+    return this.httpClient.post('http://localhost:3000/schedules', schedule).toPromise()
+      .catch(({error: {message}}) => {
+        alert(message);
+      });
   }
 
   public updateSchedule(schedule) {
