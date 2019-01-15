@@ -76,11 +76,17 @@ export class SchedulerService {
 
   public updateSchedule(schedule) {
     schedule.timestamp = SchedulerService.toTimestamp(schedule);
-    return this.httpClient.put('http://localhost:3000/schedules', schedule).toPromise();
+    return this.httpClient.put('http://localhost:3000/schedules', schedule).toPromise()
+      .catch(({error: {message}}) => {
+        alert(message);
+      });
   }
 
   public deleteSchedule(schedule) {
-    return this.httpClient.delete(`http://localhost:3000/schedules/${schedule.$loki}`).toPromise();
+    return this.httpClient.delete(`http://localhost:3000/schedules/${schedule.$loki}`).toPromise()
+      .catch(({error: {message}}) => {
+        alert(message);
+      });
   }
 
 

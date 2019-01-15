@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app  = express()
 const loki = require('lokijs');
 const bodyParser = require('body-parser');
 let schedules;
@@ -8,7 +9,7 @@ const db = new loki('loki.json', {
   autosave: true,
   autosaveInterval: 4000
 });
-app.use(express.static('dist'))
+app.use(express.static('dist/scheduler'))
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
