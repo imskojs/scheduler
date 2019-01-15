@@ -14,6 +14,9 @@ export class CalendarService {
   private renderWeekSub: Subject<boolean> = new Subject();
   public renderWeek$: Observable<boolean> = this.renderWeekSub.asObservable();
 
+  private renderHourSub: Subject<boolean> = new Subject();
+  public renderHour$: Observable<boolean> = this.renderHourSub.asObservable();
+
   constructor() {
   }
 
@@ -57,18 +60,21 @@ export class CalendarService {
       const newTimeStamp = Math.floor(baseTimeStamp - milliDayToSubtract);
       return SchedulerService.toSimpleDateTime(newTimeStamp);
     }).reverse();
+
     const daysAfter: SimpleDateTime[] = Array(numberOfDaysAfter).fill(null).map((_, i) => {
       const milliDayToAdd = MILLIDAY * (i + 1);
       const newTimeStamp = Math.floor(baseTimeStamp + milliDayToAdd);
       return SchedulerService.toSimpleDateTime(newTimeStamp);
     });
     const week: SimpleDateTime[] = daysBefore.concat([dateTime]).concat(daysAfter);
+
     const newWeek: any = week.map((simpleDateTime, i) => {
       const dayOne: Day = [];
+      const {year, month, day} = simpleDateTime;
       dayOne.meta = {
-        category: toCategory(year, month, dateTime.day),
+        category: toCategory(year, month, day),
         year, month,
-        day: dateTime.day,
+        day: day,
         daysOfWeek: i
       };
       return dayOne;
@@ -102,8 +108,13 @@ export class CalendarService {
   public renderMonth(): void {
     this.renderMonthSub.next();
   }
+
   public renderWeek(): void {
     this.renderWeekSub.next();
+  }
+
+  public renderHour(): void {
+    this.renderHourSub.next();
   }
 
 }

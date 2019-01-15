@@ -5,7 +5,7 @@ import {CalendarService} from '../calendar/calendar.service';
 import {ControlService} from '../control/control.service';
 import {SchedulerService} from '../scheduler.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {distinctUntilChanged, map, mergeMap, takeUntil, withLatestFrom} from 'rxjs/operators';
+import {map, mergeMap, takeUntil, tap, withLatestFrom} from 'rxjs/operators';
 
 
 const {groupSchedules, toCategory, toSimpleTime} = SchedulerService;
@@ -36,19 +36,19 @@ export class CalendarWeeklyComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.weekGenerator$ = this.controlService.getSelectedDate().pipe(
-      distinctUntilChanged((prev: SimpleDateTime, curr: SimpleDateTime) => prev.month === curr.month),
       map((dateTime: SimpleDateTime) => generateWeek(dateTime))
     );
 
     merge(this.calendarService.renderWeek$, this.weekGenerator$).pipe(
       withLatestFrom(this.weekGenerator$, this.controlService.getSelectedDate()),
-      // TODO: getSchedules year, month day for week
       mergeMap(([_, week, date]) => zip(of(week), this.scheduleService.getSchedules(date.year, date.month, date.day))),
       map(([week, schedules]: [Day[], Schedule[]]) => {
         const scheduleGroup: ScheduleGroup = groupSchedules(schedules);
         return addSchedules(emptySchedules(week), scheduleGroup);
       }),
+      tap(() => this.calendarService.renderHour()),
       takeUntil(this.UNSUB)
+
     ).subscribe(week => this.week = week);
   }
 
@@ -68,9 +68,9 @@ export class CalendarWeeklyComponent implements OnInit, OnDestroy {
     this.start = start;
     this.end = end;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result
-      .then((result: 'save' | 'update') => this.handleSave())
+      .then(() => this.handleSave())
       .then(() => this.calendarService.renderWeek())
-      .catch((reason) => this.handleCancel());
+      .catch(() => this.handleCancel());
   }
 
   public trackByDayId(index, day) {

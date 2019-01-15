@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     component: SchedulerComponent,
     children: [
-      { path: '', redirectTo: 'calendar', pathMatch: 'full' },
+      { path: '', redirectTo: 'calendar/month', pathMatch: 'full' },
       {
         path: 'calendar', component: CalendarComponent,
         children: [

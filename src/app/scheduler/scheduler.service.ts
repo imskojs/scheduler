@@ -26,7 +26,7 @@ export class SchedulerService {
   }
 
   static toTimestamp(simpleDateTime: SimpleDateTime): number {
-    const {year, day, hour, minute = 0} = simpleDateTime;
+    const {year, day, hour = 0, minute = 0} = simpleDateTime;
     let {month} = simpleDateTime;
     const date = new Date(year, --month, day, hour, minute);
     return date.getTime();
@@ -66,11 +66,13 @@ export class SchedulerService {
     }, cached || <ScheduleGroup>{});
   }
 
-  public addSchedule(schedule) {
+  public addSchedule(schedule: Schedule) {
+    schedule.timestamp = SchedulerService.toTimestamp(schedule);
     return this.httpClient.post('http://localhost:3000/schedules', schedule).toPromise();
   }
 
   public updateSchedule(schedule) {
+    schedule.timestamp = SchedulerService.toTimestamp(schedule);
     return this.httpClient.put('http://localhost:3000/schedules', schedule).toPromise();
   }
 
@@ -79,8 +81,7 @@ export class SchedulerService {
   }
 
 
-  public getSchedules(year: number, month: number, day: number = 0): Promise<Schedule[]> {
-    // http goes here
+  public getSchedules(year: number, month: number, day: number = 99): Promise<Schedule[]> {
     return this.httpClient.get<Schedule[]>(`http://localhost:3000/schedules/${year}/${month}/${day}`).toPromise();
   }
 

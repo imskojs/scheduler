@@ -21,11 +21,11 @@ app.use(function (req, res, next) {
 //TODO: validation
 
 app.use(function (req, res, next) {
-  if(!req.body) {
+  if (!req.body) {
     return next();
   }
   next();
-})
+});
 // post
 app.post('/schedules', (req, res) => {
   const {month, category, start, end} = req.body;
@@ -50,13 +50,22 @@ app.post('/schedules', (req, res) => {
 });
 
 // get
-app.get('/schedules/:year/:month', (req, res) => {
-  const {year, month} = req.params;
-  console.log(year, month);
-  const requestedMonth = schedules.where(function (obj) {
-    return obj.year === +year && obj.month === +month;
+app.get('/schedules/:year/:month/:day', (req, res) => {
+  const {year, month, day} = req.params;
+  if(+day === 99) {
+    const requestedMonth = schedules.where(function (obj) {
+      return obj.year === +year && obj.month === +month;
+    });
+    return res.send(requestedMonth);
+  }
+  const timestamp = toTimestamp({year: +year, month: +month, day: +day});
+  const MILLIDAY = 24 * 60 * 60 * 1000;
+  const beginning = timestamp - MILLIDAY * 7;
+  const end = timestamp + MILLIDAY * 7;
+  const requestedWeek = schedules.where(function(obj){
+    return obj.timestamp > beginning && obj.timestamp < end;
   });
-  return res.send(requestedMonth);
+  return res.send(requestedWeek);
 });
 
 // put
@@ -86,7 +95,7 @@ app.put('/schedules', async (req, res) => {
 });
 
 app.delete('/schedules/:id', async (req, res) => {
-  var x = schedules.remove({'$loki': req.params.id});
+  schedules.remove({'$loki': req.params.id});
   const {month} = req.body;
   const updatedMonth = schedules.find({month});
   return res.send(updatedMonth);
@@ -100,35 +109,12 @@ function databaseInitialize() {
   schedules = db.getCollection("schedules");
   if (schedules === null) {
     schedules = db.addCollection("schedules");
-    schedules.insert([
-      {
-        start: 12, count: 1, end: 13,
-        category: '20190121', year: 2019, month: 1,
-        day: 21, daysOfWeek: 4, title: '카카오와'
-      },
-      {
-        start: 13, count: 1, end: 14,
-        category: '20190121', year: 2019, month: 1,
-        day: 21, daysOfWeek: 4, title: '구구릴'
-      },
-      {
-        year: 2019, month: 1, day: 22, category: '20190122',
-        start: 12, count: 1, end: 13, daysOfWeek: 4, title: '타이틀 입니다 1',
-        content: '노래를 한다네 므매'
-      },
-      {
-        year: 2019, month: 1, day: 22, category: '201901212',
-        start: 13, count: 1, end: 14, daysOfWeek: 4, title: '타이틀 입니다 2'
-      },
-      {
-        year: 2019, month: 1, day: 22, category: '20190122',
-        start: 14, count: 1, end: 15, daysOfWeek: 4, title: '타이틀 입니다 3'
-      },
-      {
-        year: 2019, month: 1, day: 22, category: '20190122',
-        start: 15, count: 1, end: 16, daysOfWeek: 4, title: '타이틀 입니다 4'
-      },
-    ])
   }
 }
 
+function toTimestamp(simpleDateTime) {
+  const {year, day, hour = 0, minute = 0} = simpleDateTime;
+  let {month} = simpleDateTime;
+  const date = new Date(year, --month, day, hour, minute);
+  return date.getTime();
+}

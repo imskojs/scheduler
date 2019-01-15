@@ -24,9 +24,9 @@ export class SimpleDateTime {
   year: number;
   month: number;
   day: number;
-  hour: number;
-  minute: number;
-  daysOfWeek: number;
+  hour?: number;
+  minute?: number;
+  daysOfWeek?: number;
   category?: string;
 }
 
@@ -55,6 +55,7 @@ export class Schedule {
   day: number;
   daysOfWeek?: number;
   $loki?: number;
+  timestamp?: number;
 }
 
 

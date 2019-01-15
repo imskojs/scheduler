@@ -1,3 +1,10 @@
-<p>
-  calendar-weekly works!
-</p>
+<div class="days-container">
+  <scheduler-calendar-day
+    class="day"
+    *ngFor=" let day of week; let i = index; trackBy: i "
+    [day]=" day "
+    [index]="i"
+    type="week"
+  >
+  </scheduler-calendar-day>
+</div>

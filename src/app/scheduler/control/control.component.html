@@ -2,8 +2,8 @@
 
   <div class="date-select-control">
 
-    <div class="prev" 
-      (click)="sendNextDateDirection('prev')"
+    <div class="prev"
+         (click)="sendNextDateDirection('prev')"
     >
       <
     </div>
@@ -11,7 +11,7 @@
       {{ selectedDateView$ | async}}
     </div>
     <div class="next"
-      (click)="sendNextDateDirection('next')"
+         (click)="sendNextDateDirection('next')"
     >
       >
     </div>
@@ -20,14 +20,16 @@
 
   <div class="toggle-month-week">
     <div class="month"
-      [class.active]="dateType === 'month'"
-      (click)="selectDateType('month')"
+         routerLink="calendar/month"
+         routerLinkActive="active"
+         (click)="selectDateType('month')"
     >
       월
     </div>
     <div class="week"
-      [class.active]="dateType === 'week'"
-      (click)="selectDateType('week')"
+         routerLink="calendar/week"
+         routerLinkActive="active"
+         (click)="selectDateType('week')"
     >
       주
     </div>

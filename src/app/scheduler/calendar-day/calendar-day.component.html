@@ -1,14 +1,28 @@
+<!-- Month -->
 <div class="days-of-week">
   <span> {{renderDaysOfWeek(index)}} </span>
   <span> {{ day?.meta?.day }} </span>
 </div>
-<div class="schedules">
+<div class="schedules" *ngIf="type === 'month'">
   <div class="schedule"
        (click)="openUpdateModal(contentDay, schedule, $event)"
        *ngFor=" let schedule of day ">
     <span class="start">{{schedule.start}}시</span>
     <span class="title">{{schedule.title}}</span>
   </div>
+</div>
+
+<!-- Week -->
+<div class="schedules-week" *ngIf="type === 'week'">
+  <div class="schedule-one-hour"
+       (click)="openUpdateModal(contentDay, schedule, $event, day, i)"
+       *ngFor=" let schedule of schedules; let i = index; ">
+    <div>
+      <div class="hour"> {{ i }} 시 </div>
+      &nbsp;<span class="title">{{schedule.title}}</span>
+    </div>
+  </div>
+
 </div>
 
 <ng-template #contentDay let-modal>
@@ -40,8 +54,13 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('update')">수정</button>
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('delete')">삭제</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('save')">저장</button>
+    <div *ngIf="updating">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('update')">수정</button>
+      <span>&nbsp;</span>
+      <span>&nbsp;</span>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('delete')">삭제</button>
+    </div>
     <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('cancel')">취소</button>
   </div>
 </ng-template>
